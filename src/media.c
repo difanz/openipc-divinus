@@ -344,6 +344,7 @@ void request_idr(void) {
         case HAL_PLATFORM_F2:  f2_video_request_idr(index); break;
         #endif
 #elif defined(__mips__)
+        case HAL_PLATFORM_T23: t23_video_request_idr(index); break;
         case HAL_PLATFORM_T31: t31_video_request_idr(index); break;
 #elif defined(__riscv) || defined(__riscv__)
         case HAL_PLATFORM_CVI: cvi_video_request_idr(index); break;
@@ -371,6 +372,7 @@ void set_grayscale(bool active) {
         case HAL_PLATFORM_F2:  f2_channel_grayscale(active); break;
         #endif
 #elif defined(__mips__)
+        case HAL_PLATFORM_T23: t23_channel_grayscale(active); break;
         case HAL_PLATFORM_T31: t31_channel_grayscale(active); break;
 #elif defined(__riscv) || defined(__riscv__)
         case HAL_PLATFORM_CVI: cvi_channel_grayscale(active); break;
@@ -416,6 +418,8 @@ int create_channel(char index, short width, short height, char framerate, char j
         case HAL_PLATFORM_F2:  return f2_channel_create(index, width, height, framerate, jpeg);
         #endif
 #elif defined(__mips__)
+        case HAL_PLATFORM_T23: return t23_channel_create(index, width, height,
+            framerate, jpeg);
         case HAL_PLATFORM_T31: return t31_channel_create(index, width, height,
             framerate, jpeg);
 #elif defined(__riscv) || defined(__riscv__)
@@ -444,6 +448,7 @@ int bind_channel(char index, char framerate, char jpeg) {
         case HAL_PLATFORM_F2:  return f2_channel_bind(index);
         #endif
 #elif defined(__mips__)
+        case HAL_PLATFORM_T23: return t23_channel_bind(index);
         case HAL_PLATFORM_T31: return t31_channel_bind(index);
 #elif defined(__riscv) || defined(__riscv__)
         case HAL_PLATFORM_CVI: return cvi_channel_bind(index);
@@ -470,6 +475,7 @@ int unbind_channel(char index, char jpeg) {
         case HAL_PLATFORM_F2:  return f2_channel_unbind(index);
         #endif
 #elif defined(__mips__)
+        case HAL_PLATFORM_T23: return t23_channel_unbind(index);
         case HAL_PLATFORM_T31: return t31_channel_unbind(index);
 #elif defined(__riscv) || defined(__riscv__)
         case HAL_PLATFORM_CVI: return cvi_channel_unbind(index);
@@ -496,6 +502,7 @@ int media_video_disable(char index, char jpeg) {
         case HAL_PLATFORM_F2:  return f2_video_destroy(index);
         #endif
 #elif defined(__mips__)
+        case HAL_PLATFORM_T23: return t23_video_destroy(index);
         case HAL_PLATFORM_T31: return t31_video_destroy(index);
 #elif defined(__riscv) || defined(__riscv__)
         case HAL_PLATFORM_CVI: return cvi_video_destroy(index);
@@ -532,6 +539,7 @@ void media_audio_disable(void) {
         case HAL_PLATFORM_F2:  f2_audio_deinit(); break;
         #endif
 #elif defined(__mips__)
+        case HAL_PLATFORM_T23: t23_audio_deinit(); break;
         case HAL_PLATFORM_T31: t31_audio_deinit(); break;
 #elif defined(__riscv) || defined(__riscv__)
         case HAL_PLATFORM_CVI: cvi_audio_deinit(); break;
@@ -565,6 +573,7 @@ int media_audio_enable(void) {
         case HAL_PLATFORM_F2:  ret = f2_audio_init(app_config.audio_srate); break;
         #endif
 #elif defined(__mips__)
+        case HAL_PLATFORM_T23: ret = t23_audio_init(app_config.audio_srate); break;
         case HAL_PLATFORM_T31: ret = t31_audio_init(app_config.audio_srate); break;
 #elif defined(__riscv) || defined(__riscv__)
         case HAL_PLATFORM_CVI: ret = cvi_audio_init(app_config.audio_srate); break;
@@ -689,6 +698,7 @@ int media_mjpeg_enable(void) {
             case HAL_PLATFORM_F2:  ret = f2_video_create(index, &config); break;
             #endif
 #elif defined(__mips__)
+            case HAL_PLATFORM_T23: ret = t23_video_create(index, &config); break;
             case HAL_PLATFORM_T31: ret = t31_video_create(index, &config); break;
 #elif defined(__riscv) || defined(__riscv__)
             case HAL_PLATFORM_CVI: ret = cvi_video_create(index, &config); break;
@@ -782,6 +792,7 @@ int media_mp4_enable(void) {
             case HAL_PLATFORM_F2:  ret = f2_video_create(index, &config); break;
             #endif
 #elif defined(__mips__)
+            case HAL_PLATFORM_T23: ret = t23_video_create(index, &config); break;
             case HAL_PLATFORM_T31: ret = t31_video_create(index, &config); break;
 #elif defined(__riscv) || defined(__riscv__)
             case HAL_PLATFORM_CVI: ret = cvi_video_create(index, &config); break;
@@ -836,6 +847,7 @@ int sdk_start(void) {
         case HAL_PLATFORM_F2:  ret = f2_hal_init(); break;
         #endif
 #elif defined(__mips__)
+        case HAL_PLATFORM_T23: ret = t23_hal_init(); break;
         case HAL_PLATFORM_T31: ret = t31_hal_init(); break;
 #elif defined(__riscv) || defined(__riscv__)
         case HAL_PLATFORM_CVI: ret = cvi_hal_init(); break;
@@ -899,6 +911,10 @@ int sdk_start(void) {
             break;
         #endif
 #elif defined(__mips__)
+        case HAL_PLATFORM_T23:
+            t23_aud_cb = save_audio_stream;
+            t23_vid_cb = save_video_stream;
+            break;
         case HAL_PLATFORM_T31:
             t31_aud_cb = save_audio_stream;
             t31_vid_cb = save_video_stream;
@@ -930,6 +946,7 @@ int sdk_start(void) {
         case HAL_PLATFORM_F2:  ret = f2_system_init(); break;
         #endif
 #elif defined(__mips__)
+        case HAL_PLATFORM_T23: ret = t23_system_init(); break;
         case HAL_PLATFORM_T31: ret = t31_system_init(); break;
 #elif defined(__riscv) || defined(__riscv__)
         case HAL_PLATFORM_CVI: ret = cvi_system_init(app_config.sensor_config); break;
@@ -976,6 +993,8 @@ int sdk_start(void) {
             app_config.mirror, app_config.flip, framerate, app_config.antiflicker); break;
         #endif
 #elif defined(__mips__)
+        case HAL_PLATFORM_T23: ret = t23_pipeline_create(app_config.mirror,
+            app_config.flip, framerate, app_config.antiflicker); break;
         case HAL_PLATFORM_T31: ret = t31_pipeline_create(app_config.mirror,
             app_config.flip, framerate, app_config.antiflicker); break;
 #elif defined(__riscv) || defined(__riscv__)
@@ -1048,6 +1067,7 @@ int sdk_start(void) {
             case HAL_PLATFORM_F1:  f1_config_load(app_config.sensor_config); break;
             case HAL_PLATFORM_F2:  f2_config_load(app_config.sensor_config); break;
 #elif defined(__mips__)
+            case HAL_PLATFORM_T23: t23_config_load(app_config.sensor_config); break;
             case HAL_PLATFORM_T31: t31_config_load(app_config.sensor_config); break;
 #endif
         }
@@ -1081,6 +1101,7 @@ int sdk_stop(void) {
         case HAL_PLATFORM_F2:  f2_video_destroy_all(); break;
         #endif
 #elif defined(__mips__)
+        case HAL_PLATFORM_T23: t23_video_destroy_all(); break;
         case HAL_PLATFORM_T31: t31_video_destroy_all(); break;
 #elif defined(__riscv) || defined(__riscv__)
         case HAL_PLATFORM_CVI: cvi_video_destroy_all(); break;
@@ -1105,6 +1126,7 @@ int sdk_stop(void) {
         case HAL_PLATFORM_F2:  f2_pipeline_destroy(); break;
         #endif
 #elif defined(__mips__)
+        case HAL_PLATFORM_T23: t23_pipeline_destroy(); break;
         case HAL_PLATFORM_T31: t31_pipeline_destroy(); break;
 #elif defined(__riscv) || defined(__riscv__)
         case HAL_PLATFORM_CVI: cvi_pipeline_destroy(); break;
@@ -1136,6 +1158,7 @@ int sdk_stop(void) {
         case HAL_PLATFORM_F2:  f2_system_deinit(); break;
         #endif
 #elif defined(__mips__)
+        case HAL_PLATFORM_T23: t23_system_deinit(); break;
         case HAL_PLATFORM_T31: t31_system_deinit(); break;
 #elif defined(__riscv) || defined(__riscv__)
         case HAL_PLATFORM_CVI: cvi_system_deinit(); break;
@@ -1170,6 +1193,7 @@ int sdk_stop(void) {
         case HAL_PLATFORM_F2:  f2_hal_deinit(); break;
         #endif
 #elif defined(__mips__)
+        case HAL_PLATFORM_T23: t23_hal_deinit(); break;
         case HAL_PLATFORM_T31: t31_hal_deinit(); break;
 #elif defined(__riscv) || defined(__riscv__)
         case HAL_PLATFORM_CVI: cvi_hal_deinit(); break;

@@ -25,6 +25,7 @@
 #include "fhan/f2_hal.h"
 #endif
 #elif defined(__mips__)
+#include "inge/t23_hal.h"
 #include "inge/t31_hal.h"
 #elif defined(__riscv) || defined(__riscv__)
 #include "plus/cvi_hal.h"

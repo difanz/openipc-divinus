@@ -240,7 +240,7 @@ void send_mp4_to_client(char index, hal_vidstream *stream, char isH265) {
         hal_vidpack *pack = &stream->pack[i];
         unsigned char *pack_data = pack->data + pack->offset;
 
-        if (plat == HAL_PLATFORM_AK)
+        if (plat == HAL_PLATFORM_AK || plat == HAL_PLATFORM_T23)
             mp4_set_timestamp(pack->timestamp);
 
         for (char j = 0; j < pack->naluCnt; j++) {

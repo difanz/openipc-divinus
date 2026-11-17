@@ -15,6 +15,7 @@ int jpeg_init() {
         case HAL_PLATFORM_AK: goto active;
         case HAL_PLATFORM_GM: goto active;
 #elif defined(__mips__)
+        case HAL_PLATFORM_T23: goto active;
         case HAL_PLATFORM_T31:
             if (app_config.mjpeg_enable) goto active;
             break;
@@ -98,6 +99,7 @@ void jpeg_deinit() {
         case HAL_PLATFORM_F2:  f2_video_destroy(jpeg_index); break;
         #endif
 #elif defined(__mips__)
+        case HAL_PLATFORM_T23: goto active;
         case HAL_PLATFORM_T31:
             if (app_config.mjpeg_enable) goto active;
             t31_video_destroy(jpeg_index);
@@ -151,6 +153,7 @@ int jpeg_get(short width, short height, char quality, char grayscale,
         case HAL_PLATFORM_F2:  ret = f2_video_snapshot_grab(jpeg_index, jpeg); break;
         #endif
 #elif defined(__mips__)
+        case HAL_PLATFORM_T23: ret = t23_video_snapshot_grab(jpeg_index, jpeg); break;
         case HAL_PLATFORM_T31: ret = t31_video_snapshot_grab(app_config.mjpeg_enable ?
             -1 : jpeg_index, jpeg); break;
 #elif defined(__riscv) || defined(__riscv__)
